@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  #before_action :authenticate_user!
+  protect_from_forgery
 
   def show
     @user = User.find(params[:id])
@@ -6,6 +8,7 @@ class UsersController < ApplicationController
   end
 
   def new
+        @user = User.new
 	@titre = "Inscription"
   end
 
@@ -14,8 +17,10 @@ class UsersController < ApplicationController
     # the parameters were not filtered. This is just some Rails magic.
     @user = User.new user_params
     if @user.save
-      # Do whatever
+      flash[:success] = "Bienvenue dans l'Application Exemple!"
+      redirect_to @user
     else
+      @titre = "Inscription"
       render action: :new
     end
   end
