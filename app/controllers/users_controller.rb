@@ -2,6 +2,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
+    @titre = @user.nom
   end
 
   def new
@@ -25,11 +26,11 @@ class UsersController < ApplicationController
 
     if current_user.nil? # Guest
       # Remove all keys from params[:user] except :name, :email, :password, and :password_confirmation
-      params.require(:user).permit :nom, :email
+      params.require(:user).permit :nom, :email, :password, :password_confirmation
     elsif current_user.has_role :admin
       params.require(:user).permit! # Allow all user parameters
     elsif current_user.has_role :user
-      params.require(:user).permit :nom, :email
+      params.require(:user).permit :nom, :email, :password, :password_confirmation
     end
   end
 end
