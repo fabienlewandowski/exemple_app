@@ -1,8 +1,26 @@
 Rails.application.routes.draw do
-  devise_for :users
-  resources :users
+  devise_for :users, controllers: { sessions: "users/sessions", registrations: "users/registrations" }
 
-  get '/signup',  :to => 'users#new'
+  resources :users
+  resources :sessions, :only => [:new, :create, :destroy]
+
+#  get '/signup',  :to => 'users#new'
+
+  devise_scope :user do
+    get "/signup" => "users/registrations#new"
+  end
+  devise_scope :user do
+    post "/signup" => "users/registrations#create"
+  end
+  devise_scope :user do
+    get "/signin" => "users/sessions#new"
+  end
+  devise_scope :user do
+    post "/signin" => "users/sessions#create"
+  end
+  devise_scope :user do
+    delete "/signout" => "users/sessions#destroy"
+  end
 
   get '/contact', :to => 'pages#contact'
   get '/about',   :to => 'pages#about'

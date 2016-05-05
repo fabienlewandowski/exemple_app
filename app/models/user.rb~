@@ -1,18 +1,19 @@
 class User
   include Mongoid::Document
   include Mongoid::Timestamps
-  devise :database_authenticatable
-
+  devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable
+=begin
   ## Database authenticatable
   field :encrypted_password, :type => String, :default => ""
 
   attr_accessor :password
 
-  field :nom, type: String
+  field :name, type: String
   field :email, type: String
   field :salt, type: String
 
-  validates :nom, presence: true,
+
+  validates :name, presence: true,
                    length: { maximum: 50 }
   validates :email, presence: true,
                     format: { with: /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i }, 
@@ -22,13 +23,19 @@ class User
                        length: { within: 6..40 }
   
   index({ email: 1 }, { unique: true })
-
+=end
+=begin
   before_save :encrypt_password
 
   def has_password?(password_soumis)
     encrypted_password == encrypt(password_soumis)
   end
 
+  def self.authenticate(email, submitted_password)
+    user = find_by(email: email)
+    return nil  if user.nil?
+    return user if user.has_password?(submitted_password)
+  end
 
   private
 
@@ -48,5 +55,5 @@ class User
     def secure_hash(string)
       Digest::SHA2.hexdigest(string)
     end
-
+=end
 end

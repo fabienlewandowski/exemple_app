@@ -19,7 +19,12 @@
 # To learn more, please read the Rails Internationalization guide
 # available at http://guides.rubyonrails.org/i18n.html.
 
-# config/locales/en.yml
-en:
-  hello_world: Hello world!
-  hello_flash: Hello flash!
+# config/locales/pirate.yml
+pirate:
+  hello_world: Ahoy World
+  hello_flash: Ahoy Flash
+  time:
+    formats:
+      short: "arrrround %H'ish"
+ 
+

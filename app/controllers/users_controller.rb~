@@ -4,7 +4,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
-    @titre = @user.nom
+    @titre = @user.valid_password?('')
   end
 
   def new
@@ -17,6 +17,7 @@ class UsersController < ApplicationController
     # the parameters were not filtered. This is just some Rails magic.
     @user = User.new user_params
     if @user.save
+      flash[:success] = "Bienvenue dans l'Application Exemple!"
       redirect_to @user
     else
       @titre = "Inscription"
