@@ -1,4 +1,5 @@
 class User
+  include Toggle
   include Mongoid::Document
   include Mongoid::Timestamps
 
@@ -46,6 +47,14 @@ class User
   index({ email: 1 }, { unique: true, background: true })
   field :name, :type => String
   validates_presence_of :name
+
+  # Admin profile
+  field :admin, :type => Boolean, :default => false
+
+  def toggle!(field)
+    send "#{field}=", !self.send("#{field}?")
+    save :validation => false
+  end
 
 =begin
   ## Database authenticatable

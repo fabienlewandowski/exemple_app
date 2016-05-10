@@ -1,10 +1,19 @@
 class UsersController < ApplicationController
-  #before_action :authenticate_user!
+  before_action :authenticate_user!
+  before_filter :admin_user,   :only => :destroy
   protect_from_forgery
+
+  def index
+    @titre = "Tous les utilisateurs"
+    @users = User.all
+  end
 
   def show
     @user = User.find(params[:id])
     @titre = @user.name
+    unless @user == current_user
+      redirect_to :root, :alert => "Accès refusé." 
+    end
   end
 
   def new
@@ -25,7 +34,21 @@ class UsersController < ApplicationController
     end
   end
 
+  def destroy
+    User.find(params[:id]).destroy
+    flash[:success] = "Utilisateur supprimé."
+    redirect_to users_path
+  end
+
   private
+
+    def admin_user
+      unless current_user.admin?
+        flash[:error] = "Vous n'êtes pas admin!" 
+        redirect_to(root_path)
+      end
+    end
+
   def user_params
     # params.require(:user) throws an error if params[:user] is nil
 

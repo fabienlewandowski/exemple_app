@@ -5,7 +5,9 @@
             <li><%= link_to "Accueil", root_path %></li>
             <li><%= link_to "Aide", help_path %></li>
             <% if signed_in? %>
-            <li><%= link_to "Mon compte", user_path(current_user._id) %></li>
+            <li><%= link_to "Utilisateurs", users_path %></li>
+            <li><%= link_to "Mon profil", user_path(current_user._id) %></li>
+            <li><%= link_to "Editer profil", edit_user_registration_path %></li>
             <li><%= link_to "Déconnexion", signout_path, :method => 'delete' %></li>
             <% else %>
             <li><%= link_to "S'identifier", signin_path %></li>
